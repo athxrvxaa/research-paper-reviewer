@@ -75,7 +75,7 @@ The goal is not to replace human reviewers, but to assist in preliminary evaluat
 ---
 
 ## System Architecture
-
+![Data Processing Pipeline](./img/workflow.png)
 
 ---
 
