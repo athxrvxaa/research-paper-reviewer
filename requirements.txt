@@ -1,0 +1,9 @@
+pymupdf
+nltk
+spacy
+scikit-learn
+
+transformers
+torch
+accelerate
+sentencepiece
