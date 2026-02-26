@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 # AI-Based Research Paper Review Generator  
 ### MSc Data Science – Natural Language Processing Case Study (2025–26)
 
@@ -44,6 +43,11 @@ The system is designed as an assistive AI tool, not a replacement for human revi
 ---
 
 ## System Architecture
+## System Architecture
+
+The following diagram illustrates the end-to-end pipeline, from PDF ingestion to the generation of the final structured review using Gemini 2.5 Flash.
+
+![System Architecture Workflow](img/Gemini_Generated_Image_hxo3d3hxo3d3hxo3.png)
 
 PDF Upload  
 → Text Extraction (PyMuPDF)  
