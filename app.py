@@ -2,70 +2,64 @@ import streamlit as st
 from utils.pdf_extractor import extract_text_from_pdf
 from utils.text_cleaner import clean_text, remove_references_section
 from utils.section_splitter import split_into_sections
-from utils.summarizer import PaperSummarizer
-from utils.reviewer import PaperReviewer
+from utils.gemini_model import GeminiReviewer
 
 st.set_page_config(page_title="AI Research Paper Reviewer", layout="wide")
 
-st.title("AI Research Paper Reviewer")
+st.title("AI Research Paper Reviewer (LLaMA 3 Powered)")
 
 uploaded_file = st.file_uploader("Upload Research Paper PDF", type="pdf")
 
 if uploaded_file:
 
-    with st.spinner("Processing PDF..."):
+    with st.spinner("Processing..."):
 
-        # --------- TEXT EXTRACTION ----------
         raw_text = extract_text_from_pdf(uploaded_file)
         cleaned_text = clean_text(raw_text)
         main_text = remove_references_section(cleaned_text)
 
-        # --------- SECTION SPLITTING ----------
         sections = split_into_sections(main_text)
 
-        # --------- LOAD MODELS (CACHED) ----------
-        summarizer = PaperSummarizer()
-        reviewer = PaperReviewer()
+        reviewer = GeminiReviewer()
 
-        # --------- SUMMARY ----------
-        st.subheader("Generated Summary")
-
-        if sections.get("abstract") and sections["abstract"].strip() != "":
-            summary = summarizer.summarize_text(sections["abstract"])
-        else:
-            # fallback: summarize limited portion for speed
-            short_text = main_text[:3000]
-            summary = summarizer.summarize_text(short_text)
-
-        st.write(summary)
-
-        # --------- REVIEW GENERATION ----------
-        st.subheader("Generated Review")
-
-        methodology_text = sections.get("methodology", "")[:1500]
-        results_text = sections.get("results", "")[:1500]
+        abstract = sections.get("abstract", "")[:1500]
+        methodology = sections.get("methodology", "")[:1500]
+        results = sections.get("results", "")[:1500]
 
         prompt = f"""
-You are an academic peer reviewer.
+You are a strict academic peer reviewer.
 
-Based on the information below, provide:
+Analyze the research paper information below and generate a structured review in this format:
 
-1. Key Strengths
-2. Key Weaknesses
-3. Evaluation of Methodology
-4. Suggestions for Improvement
-5. Overall Recommendation (Accept / Minor Revision / Major Revision / Reject)
+### Summary
+(Concise technical summary)
 
-Paper Summary:
-{summary}
+### Strengths
+- Bullet points
 
-Methodology Section:
-{methodology_text}
+### Weaknesses
+- Bullet points
 
-Results Section:
-{results_text}
+### Methodology Evaluation
+(Technical critique)
+
+### Suggestions for Improvement
+- Bullet points
+
+### Final Recommendation
+(Choose one: Accept / Minor Revision / Major Revision / Reject and justify)
+
+Abstract:
+{abstract}
+
+Methodology:
+{methodology}
+
+Results:
+{results}
 """
 
-        review = reviewer.generate_review(prompt)
+        response = reviewer.generate(prompt)
 
-        st.write(review)
+        st.subheader("AI Review Output")
+        st.write(response)
