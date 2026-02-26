@@ -7,3 +7,7 @@ transformers
 torch
 accelerate
 sentencepiece
+
+streamlit
+pymupdf
+google-genai

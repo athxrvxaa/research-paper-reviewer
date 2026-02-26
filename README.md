@@ -137,7 +137,7 @@ research-paper-reviewer/
 
 ### 1. Clone Repository
 
-git clone https://github.com/YOUR_USERNAME/AI-Research-Paper-Reviewer.git  
+git clone https://github.com/athxrvxaa/AI-Research-Paper-Reviewer.git  
 cd AI-Research-Paper-Reviewer  
 
 ### 2. Create Environment
@@ -195,4 +195,3 @@ This project demonstrates the practical integration of NLP preprocessing techniq
 
 It bridges foundational NLP concepts with real-world AI system deployment, making it a comprehensive applied NLP case study.
 
-EOF
