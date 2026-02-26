@@ -1,3 +1,4 @@
+cat > README.md << 'EOF'
 # AI-Based Research Paper Review Generator  
 ### MSc Data Science – Natural Language Processing Case Study (2025–26)
 
@@ -14,176 +15,184 @@
 
 ## Project Overview
 
-The AI-Based Research Paper Review Generator is an NLP-driven system designed to automatically generate structured peer-review style feedback for academic research papers.
+The AI-Based Research Paper Review Generator is an NLP-powered system that automatically generates structured academic peer-review style feedback for research papers.
 
 The system accepts a research paper in PDF format and produces:
 
-- Concise summary of the paper  
+- Concise technical summary  
 - Key strengths  
 - Identified weaknesses  
 - Methodology evaluation  
-- Overall quality score  
+- Suggestions for improvement  
 - Final recommendation (Accept / Minor Revision / Major Revision / Reject)
 
-This project combines classical NLP techniques with modern Transformer-based models to simulate an academic peer-review process.
+This project integrates classical NLP preprocessing techniques with modern Large Language Models (Google Gemini 2.5 Flash) to simulate an academic review workflow.
 
 ---
 
 ## Problem Statement
 
-Peer-reviewing research papers is a time-consuming and subjective process. This project aims to develop an automated NLP-based system that:
+Academic peer review is a time-consuming and expertise-driven process. This project aims to:
 
-- Extracts meaningful content from research papers
-- Analyzes structure and methodology
-- Generates structured review feedback
-- Provides heuristic-based quality scoring
+- Automatically extract structured content from research papers
+- Analyze core sections (Abstract, Methodology, Results)
+- Generate structured review feedback
+- Assist in preliminary research evaluation
 
-The goal is not to replace human reviewers, but to assist in preliminary evaluation and feedback generation.
-
----
-
-## Core NLP Concepts Used
-
-### 1. Text Preprocessing
-- Tokenization
-- Stopword removal
-- Lemmatization
-- Noise removal
-- Section segmentation
-
-### 2. Word & Sentence Embeddings
-- Contextual embeddings
-- Sentence similarity using cosine similarity
-
-### 3. Transformer Architecture
-- Self-attention mechanism
-- Encoder-decoder models
-- Pretrained language models
-
-### 4. Abstractive Text Summarization
-- Transformer-based summarization (BART / PEGASUS)
-
-### 5. Prompt-Based Text Generation
-- Instruction-tuned models (FLAN-T5)
-- Structured review generation
-
-### 6. Heuristic Scoring Mechanism
-- Section presence analysis
-- Keyword-based evaluation
-- Readability and length-based scoring
+The system is designed as an assistive AI tool, not a replacement for human reviewers.
 
 ---
 
 ## System Architecture
-![Workflow Diagram](./img/workflow.jpg)
+
+PDF Upload  
+→ Text Extraction (PyMuPDF)  
+→ Text Cleaning & Section Segmentation  
+→ Prompt Engineering  
+→ Gemini 2.5 Flash API  
+→ Structured Review Output  
 
 ---
 
-## Technologies and Libraries Used
+## Core NLP Components
 
-### Core NLP
-- transformers
-- torch
-- sentence-transformers
-- nltk
-- spacy
-- scikit-learn
+### 1. Text Processing
+- PDF parsing using PyMuPDF
+- Cleaning and normalization
+- Section segmentation (Abstract, Methodology, Results)
 
-### PDF Processing
-- PyMuPDF (fitz)
+### 2. Prompt-Based Generation
+- Instruction-driven structured review generation
+- Controlled formatting via prompt templates
+- Academic tone enforcement
 
-### Data Handling
-- pandas
-- numpy
+### 3. Large Language Model
+- Google Gemini 2.5 Flash
+- API-based inference (no local GPU dependency)
+- Fast and scalable generation
 
-### Evaluation
-- rouge-score
-- cosine similarity metrics
+---
 
-### Frontend Interface
-- streamlit
+## Technologies Used
+
+### NLP & Backend
+- Python 3.10
+- PyMuPDF
+- Google GenAI SDK
+- Prompt Engineering
+
+### Interface
+- Streamlit
+
+### Deployment Mode
+- Local Web App
+- API-based inference via Google AI Studio
 
 ---
 
 ## Output Structure
 
-The system generates a structured review containing:
-Summary
-Strengths
-Weaknesses
-Methodology Evaluation
-Overall Score (0–10)
-Final Recommendation
+The system generates:
 
----
+### Summary  
+Concise technical overview of the paper  
 
-## Evaluation Metrics
+### Strengths  
+Bullet-point academic strengths  
 
-To validate performance:
+### Weaknesses  
+Identified limitations  
 
-- ROUGE Score for summarization quality
-- Cosine similarity for semantic comparison
-- Heuristic quality scoring
-- Qualitative manual comparison with human-written reviews
+### Methodology Evaluation  
+Technical critique  
 
----
+### Suggestions for Improvement  
+Actionable recommendations  
 
-## User Interface
-
-The system is deployed using Streamlit, allowing users to:
-
-- Upload a PDF research paper
-- Automatically generate review
-- View structured feedback in an interactive layout
+### Final Recommendation  
+Accept / Minor Revision / Major Revision / Reject  
 
 ---
 
 ## Project Structure
+
 research-paper-reviewer/
 │
-├── app.py
-├── utils/
-│ ├── pdf_extractor.py
-│ ├── text_cleaner.py
-│ ├── section_splitter.py
-│ ├── summarizer.py
-│ ├── reviewer.py
-│ ├── scorer.py
+├── app.py  
+├── utils/  
+│   ├── pdf_extractor.py  
+│   ├── text_cleaner.py  
+│   ├── section_splitter.py  
+│   └── gemini_model.py  
 │
-├── requirements.txt
-└── README.md
+├── .streamlit/  
+│   └── secrets.toml  
+│
+├── requirements.txt  
+└── README.md  
+
+---
+
+## Setup Instructions
+
+### 1. Clone Repository
+
+git clone https://github.com/YOUR_USERNAME/AI-Research-Paper-Reviewer.git  
+cd AI-Research-Paper-Reviewer  
+
+### 2. Create Environment
+
+conda create -n rpr python=3.10  
+conda activate rpr  
+
+### 3. Install Dependencies
+
+pip install -r requirements.txt  
+
+### 4. Add Gemini API Key
+
+Create:
+
+.streamlit/secrets.toml  
+
+Add:
+
+GEMINI_API_KEY = "your_api_key_here"
+
+### 5. Run Application
+
+python -m streamlit run app.py  
+
+---
+
+## Why Gemini Instead of Local LLM?
+
+Due to hardware constraints (4GB VRAM), running large local models such as LLaMA or Mistral was not optimal.  
+
+Therefore, we integrated Google Gemini 2.5 Flash via API to ensure:
+
+- Fast inference
+- High-quality structured reasoning
+- Scalable architecture
+- No GPU dependency
 
 ---
 
 ## Future Enhancements
 
-- Fine-tuning model on real peer-review datasets
+- Fine-tuning on peer-review datasets
 - Multi-paper novelty comparison
+- Citation graph analysis
 - Plagiarism detection integration
-- Graph-based citation analysis
-- Reviewer bias detection
+- Research domain-specific evaluation modules
 - Cloud deployment
-
----
-
-## Expected Outcomes
-
-- Demonstrates practical application of NLP in academia
-- Integrates classical NLP and Transformer models
-- Builds an end-to-end intelligent system
-- Provides real-world research automation use-case
-
----
-
-## References
-
-- Vaswani et al., Attention Is All You Need
-- Devlin et al., BERT: Pre-training of Deep Bidirectional Transformers
-- Lewis et al., BART: Denoising Sequence-to-Sequence Pre-training
-- Raffel et al., Exploring the Limits of Transfer Learning with T5
 
 ---
 
 ## Conclusion
 
-This project showcases how modern NLP techniques and Transformer-based architectures can be applied to automate structured academic review generation. It bridges theoretical NLP foundations with real-world system implementation, making it a comprehensive case study in applied Natural Language Processing.
+This project demonstrates the practical integration of NLP preprocessing techniques and modern Large Language Models to automate structured academic review generation.
+
+It bridges foundational NLP concepts with real-world AI system deployment, making it a comprehensive applied NLP case study.
+
+EOF
